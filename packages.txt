@@ -1,0 +1,65 @@
+[pacman]
+# Core utilities
+glow
+jq
+just
+rsync
+unzip
+wakatime-cli
+yq
+brightnessctl
+grim
+libnotify
+pwvucontrol
+signal-desktop
+slurp
+swappy
+wl-clipboard
+# wl-gammactl  # AUR
+atuin
+bat
+direnv
+eza
+fd
+fzf
+gh
+git
+jujutsu
+ripgrep
+starship
+zoxide
+fish
+hyprland
+wezterm
+lazygit
+neovim
+ghostty
+discord
+obsidian
+zotero
+zk
+# nil  # AUR or manual
+
+# System dependencies
+networkmanager
+bluez
+bluez-utils
+pipewire
+# pipewire-audio  # Not a valid Arch package
+pipewire-pulse
+pipewire-alsa
+wireplumber
+
+[aur]
+# zzz  # tgirlpkgs.packages.zzz - No Arch equivalent
+cake-wallet
+wl-gammactl
+wl-clipboard-rs
+nix-direnv
+nix-your-shell
+vicinae  # home/isabel/gui/vicinae
+quickshell  # home/isabel/gui/quickshell
+# izvim  # Custom Neovim config from inputs.izvim
+# gh-eco  # gh extension
+# NO ARCH EQUIVALENT — needs manual solution
+# nix-output-monitor
