@@ -1,0 +1,289 @@
+# ============================================================
+# sync-upstream-release.yml
+#
+# Checks isabelroses/dotfiles for new releases on a schedule.
+# When a new release is found, it applies only the changed /
+# new files from the release tarball and opens a PR into main.
+# ============================================================
+
+name: Sync Upstream Release
+
+on:
+  # Run every 3 hours (a reasonable middle-ground between 2–4 h)
+  schedule:
+    - cron: "0 */3 * * *"
+
+  # Allow triggering manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: write        # push branches & commit files
+  pull-requests: write   # open pull requests
+
+jobs:
+  sync:
+    name: Check & Sync Upstream Release
+    runs-on: ubuntu-latest
+
+    env:
+      UPSTREAM_REPO: isabelroses/dotfiles
+      TRACKING_FILE: .last-synced-release
+
+    steps:
+      # ── 1. Checkout this fork ──────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Full history so we can push new branches cleanly
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 2. Fetch the latest upstream release via GitHub API ─
+      - name: Fetch latest upstream release info
+        id: upstream
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Querying GitHub API for latest release of ${UPSTREAM_REPO} …"
+
+          RELEASE_JSON=$(curl -fsSL \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${UPSTREAM_REPO}/releases/latest")
+
+          # Bail out gracefully if the API returns an error object
+          if echo "${RELEASE_JSON}" | jq -e '.message' > /dev/null 2>&1; then
+            echo "::warning::GitHub API returned an error: $(echo "${RELEASE_JSON}" | jq -r '.message')"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          TAG=$(echo "${RELEASE_JSON}"     | jq -r '.tag_name')
+          HTML_URL=$(echo "${RELEASE_JSON}" | jq -r '.html_url')
+          TARBALL_URL=$(echo "${RELEASE_JSON}" | jq -r '.tarball_url')
+
+          # Look for an explicit .tar.gz asset; fall back to tarball_url
+          ASSET_URL=$(echo "${RELEASE_JSON}" | \
+            jq -r '(.assets // []) | map(select(.name | endswith(".tar.gz"))) | first | .browser_download_url // empty')
+
+          if [ -z "${ASSET_URL}" ]; then
+            echo "No .tar.gz asset found – will use auto-generated tarball_url."
+            ASSET_URL="${TARBALL_URL}"
+          fi
+
+          echo "tag=${TAG}"          >> "$GITHUB_OUTPUT"
+          echo "html_url=${HTML_URL}" >> "$GITHUB_OUTPUT"
+          echo "asset_url=${ASSET_URL}" >> "$GITHUB_OUTPUT"
+          echo "skip=false"          >> "$GITHUB_OUTPUT"
+
+          echo "Latest upstream release : ${TAG}"
+          echo "Download URL            : ${ASSET_URL}"
+
+      # ── 3. Compare with the last synced tag ────────────────
+      - name: Check whether this release was already synced
+        id: compare
+        if: steps.upstream.outputs.skip == 'false'
+        run: |
+          LATEST_TAG="${{ steps.upstream.outputs.tag }}"
+
+          if [ -f "${TRACKING_FILE}" ]; then
+            LAST_TAG=$(cat "${TRACKING_FILE}" | tr -d '[:space:]')
+          else
+            LAST_TAG=""
+          fi
+
+          echo "Last synced tag : '${LAST_TAG}'"
+          echo "Latest tag      : '${LATEST_TAG}'"
+
+          if [ "${LATEST_TAG}" = "${LAST_TAG}" ]; then
+            echo "::notice::Already up-to-date with upstream release ${LATEST_TAG}. Nothing to do."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ── 4. Check whether a sync PR / branch already exists ─
+      - name: Check for existing sync branch
+        id: branch_check
+        if: |
+          steps.upstream.outputs.skip == 'false' &&
+          steps.compare.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ steps.upstream.outputs.tag }}"
+          BRANCH="sync/release-${TAG}"
+
+          echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
+
+          # Does the branch already exist on the remote?
+          if git ls-remote --exit-code --heads origin "${BRANCH}" > /dev/null 2>&1; then
+            echo "::notice::Branch '${BRANCH}' already exists – skipping to avoid duplicate PR."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ── 5. Download & extract the release tarball ──────────
+      - name: Download and extract release tarball
+        id: extract
+        if: |
+          steps.upstream.outputs.skip == 'false' &&
+          steps.compare.outputs.skip   == 'false' &&
+          steps.branch_check.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ASSET_URL="${{ steps.upstream.outputs.asset_url }}"
+          TMPDIR="$(mktemp -d)"
+          TARBALL="${TMPDIR}/upstream-release.tar.gz"
+          EXTRACT_DIR="${TMPDIR}/extracted"
+
+          echo "Downloading tarball from ${ASSET_URL} …"
+          curl -fsSL \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -L "${ASSET_URL}" \
+            -o "${TARBALL}"
+
+          mkdir -p "${EXTRACT_DIR}"
+          echo "Extracting tarball …"
+          tar -xzf "${TARBALL}" -C "${EXTRACT_DIR}" --strip-components=1
+
+          echo "extract_dir=${EXTRACT_DIR}" >> "$GITHUB_OUTPUT"
+          echo "Extraction complete. Contents (top-level):"
+          ls -la "${EXTRACT_DIR}/"
+
+      # ── 6. Apply only new / changed files ──────────────────
+      - name: Apply new and changed files from upstream
+        if: |
+          steps.upstream.outputs.skip == 'false' &&
+          steps.compare.outputs.skip   == 'false' &&
+          steps.branch_check.outputs.skip == 'false'
+        run: |
+          EXTRACT_DIR="${{ steps.extract.outputs.extract_dir }}"
+          TAG="${{ steps.upstream.outputs.tag }}"
+
+          echo "Applying changed/new files from upstream release ${TAG} …"
+
+          # Walk every file in the extracted tarball
+          find "${EXTRACT_DIR}" -type f | while read -r SRC; do
+            # Relative path inside the tarball
+            REL="${SRC#${EXTRACT_DIR}/}"
+
+            # ── Skip files we deliberately protect ──────────
+            # .github/ — our own CI lives here
+            # README.md — fork-specific readme
+            # .last-synced-release — our tracking file
+            case "${REL}" in
+              .github/*|README.md|.last-synced-release)
+                echo "  [SKIP  ] ${REL}  (protected)"
+                continue
+                ;;
+            esac
+
+            DEST="${REL}"
+
+            # Only copy when the file is new or its content differs
+            if [ ! -f "${DEST}" ]; then
+              echo "  [ADD   ] ${REL}"
+              mkdir -p "$(dirname "${DEST}")"
+              cp "${SRC}" "${DEST}"
+            elif ! cmp -s "${SRC}" "${DEST}"; then
+              echo "  [UPDATE] ${REL}"
+              mkdir -p "$(dirname "${DEST}")"
+              cp "${SRC}" "${DEST}"
+            else
+              echo "  [SAME  ] ${REL}"
+            fi
+          done
+
+          echo "File sync complete."
+
+      # ── 7. Update the tracking file ────────────────────────
+      - name: Update .last-synced-release
+        if: |
+          steps.upstream.outputs.skip == 'false' &&
+          steps.compare.outputs.skip   == 'false' &&
+          steps.branch_check.outputs.skip == 'false'
+        run: |
+          TAG="${{ steps.upstream.outputs.tag }}"
+          echo "${TAG}" > "${TRACKING_FILE}"
+          echo "Updated ${TRACKING_FILE} to ${TAG}"
+
+      # ── 8. Commit & push to a new branch ───────────────────
+      - name: Commit changes and push sync branch
+        if: |
+          steps.upstream.outputs.skip == 'false' &&
+          steps.compare.outputs.skip   == 'false' &&
+          steps.branch_check.outputs.skip == 'false'
+        run: |
+          TAG="${{ steps.upstream.outputs.tag }}"
+          BRANCH="${{ steps.branch_check.outputs.branch }}"
+
+          # Configure git identity for the bot commit
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout -b "${BRANCH}"
+
+          # Stage everything that changed (respects .gitignore)
+          git add -A
+
+          # If there is nothing to commit, bail out gracefully
+          if git diff --cached --quiet; then
+            echo "::notice::No file differences detected after applying the tarball. Skipping PR."
+            exit 0
+          fi
+
+          git commit -m "chore: sync upstream release ${TAG}"
+          git push origin "${BRANCH}"
+          echo "Branch '${BRANCH}' pushed successfully."
+
+      # ── 9. Open the Pull Request ───────────────────────────
+      - name: Open Pull Request
+        if: |
+          steps.upstream.outputs.skip == 'false' &&
+          steps.compare.outputs.skip   == 'false' &&
+          steps.branch_check.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ steps.upstream.outputs.tag }}"
+          BRANCH="${{ steps.branch_check.outputs.branch }}"
+          HTML_URL="${{ steps.upstream.outputs.html_url }}"
+
+          PR_TITLE="chore: sync upstream dotfiles release ${TAG}"
+
+          PR_BODY=$(cat <<EOF
+          ## 🔄 Upstream Sync — \`${TAG}\`
+
+          This PR was opened automatically by the **Sync Upstream Release** workflow.
+
+          | Field | Value |
+          |-------|-------|
+          | **Tag synced** | \`${TAG}\` |
+          | **Upstream release** | [${HTML_URL}](${HTML_URL}) |
+          | **Strategy** | Only new or changed files were applied — no existing repo files were deleted |
+
+          ### What changed?
+          Files from the upstream release tarball were compared against the current working
+          tree. Only files that were **new** or whose content **differed** from what was
+          already in this fork were copied over.
+
+          The following paths are permanently protected and were **never** overwritten:
+          - \`.github/\` — fork-specific CI & workflows
+          - \`README.md\` — fork-specific readme
+          - \`.last-synced-release\` — release tracking file
+
+          ---
+          *Auto-generated by [sync-upstream-release.yml](.github/workflows/sync-upstream-release.yml)*
+          EOF
+          )
+
+          gh pr create \
+            --base main \
+            --head "${BRANCH}" \
+            --title "${PR_TITLE}" \
+            --body  "${PR_BODY}"
+
+          echo "::notice::Pull request opened: ${PR_TITLE}"
