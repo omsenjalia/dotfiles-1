@@ -166,8 +166,29 @@ jobs:
           steps.compare.outputs.skip   == 'false' &&
           steps.branch_check.outputs.skip == 'false'
         run: |
+          set -euo pipefail
           EXTRACT_DIR="${{ steps.extract.outputs.extract_dir }}"
           TAG="${{ steps.upstream.outputs.tag }}"
+
+          # ── Load .sync-ignore patterns ───────────────────
+          # Any path listed in .sync-ignore will never be
+          # overwritten by a sync, even if upstream changed it.
+          # Supports globs, comments (#), and blank lines.
+          IGNORE_PATTERNS=()
+          if [ -f ".sync-ignore" ]; then
+            echo "Reading .sync-ignore …"
+            while IFS= read -r line; do
+              # Strip leading/trailing whitespace
+              line="${line#"${line%%[![:space:]]*}"}"
+              line="${line%"${line##*[![:space:]]}"}"
+              # Skip blank lines and comments
+              [[ -z "${line}" || "${line}" == \#* ]] && continue
+              IGNORE_PATTERNS+=("${line}")
+              echo "  [IGNORE] pattern: ${line}"
+            done < ".sync-ignore"
+          else
+            echo "No .sync-ignore file found — all non-protected files will be synced."
+          fi
 
           echo "Applying changed/new files from upstream release ${TAG} …"
 
@@ -176,16 +197,32 @@ jobs:
             # Relative path inside the tarball
             REL="${SRC#${EXTRACT_DIR}/}"
 
-            # ── Skip files we deliberately protect ──────────
+            # ── Hard-protected paths (never overwritten) ────
             # .github/ — our own CI lives here
             # README.md — fork-specific readme
             # .last-synced-release — our tracking file
+            # .sync-ignore — the ignore list itself
             case "${REL}" in
-              .github/*|README.md|.last-synced-release)
+              .github/*|README.md|.last-synced-release|.sync-ignore)
                 echo "  [SKIP  ] ${REL}  (protected)"
                 continue
                 ;;
             esac
+
+            # ── .sync-ignore patterns ────────────────────────
+            IGNORED=false
+            for pattern in "${IGNORE_PATTERNS[@]+"${IGNORE_PATTERNS[@]}"}"; do
+              case "${REL}" in
+                ${pattern}|${pattern}/*)
+                  IGNORED=true
+                  break
+                  ;;
+              esac
+            done
+            if [ "${IGNORED}" = "true" ]; then
+              echo "  [SKIP  ] ${REL}  (.sync-ignore)"
+              continue
+            fi
 
             DEST="${REL}"
 
