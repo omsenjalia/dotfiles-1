@@ -1,0 +1,24 @@
+# .sync-ignore
+#
+# Files and directories listed here will never be overwritten
+# by the sync-upstream-release workflow, even if upstream changes them.
+#
+# Rules:
+#   - One path per line
+#   - Supports glob patterns (e.g. home/shell/*.nix)
+#   - Lines starting with # are comments
+#   - Blank lines are ignored
+#   - Directories: list as   some/dir   (matches some/dir and everything inside)
+#
+# Examples (uncomment to use):
+#
+# A specific file you've customised:
+# home/shell/aliases.nix
+#
+# An entire directory you manage yourself:
+# hosts/myhost
+#
+# All files of a certain type under a path:
+# home/shell/*.nix
+#
+# Add your own below:
