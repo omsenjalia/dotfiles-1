@@ -16,6 +16,11 @@ on:
   # Allow triggering manually from the Actions tab
   workflow_dispatch:
 
+# Prevent two runs from racing to create the same sync branch
+concurrency:
+  group: sync-upstream-release
+  cancel-in-progress: false   # let a running sync finish rather than abandon it mid-push
+
 permissions:
   contents: write        # push branches & commit files
   pull-requests: write   # open pull requests
@@ -34,8 +39,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # Full history so we can push new branches cleanly
-          fetch-depth: 0
+          # Shallow clone is sufficient — we only need to push a new branch
+          fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
 
       # ── 2. Fetch the latest upstream release via GitHub API ─
@@ -134,10 +139,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
           ASSET_URL="${{ steps.upstream.outputs.asset_url }}"
-          TMPDIR="$(mktemp -d)"
-          TARBALL="${TMPDIR}/upstream-release.tar.gz"
-          EXTRACT_DIR="${TMPDIR}/extracted"
+          WORK_DIR="$(mktemp -d)"
+          TARBALL="${WORK_DIR}/upstream-release.tar.gz"
+          EXTRACT_DIR="${WORK_DIR}/extracted"
 
           echo "Downloading tarball from ${ASSET_URL} …"
           curl -fsSL \
@@ -212,11 +218,13 @@ jobs:
 
       # ── 8. Commit & push to a new branch ───────────────────
       - name: Commit changes and push sync branch
+        id: commit
         if: |
           steps.upstream.outputs.skip == 'false' &&
           steps.compare.outputs.skip   == 'false' &&
           steps.branch_check.outputs.skip == 'false'
         run: |
+          set -euo pipefail
           TAG="${{ steps.upstream.outputs.tag }}"
           BRANCH="${{ steps.branch_check.outputs.branch }}"
 
@@ -232,21 +240,28 @@ jobs:
           # If there is nothing to commit, bail out gracefully
           if git diff --cached --quiet; then
             echo "::notice::No file differences detected after applying the tarball. Skipping PR."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           git commit -m "chore: sync upstream release ${TAG}"
           git push origin "${BRANCH}"
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
           echo "Branch '${BRANCH}' pushed successfully."
 
       # ── 9. Open the Pull Request ───────────────────────────
       - name: Open Pull Request
         if: |
-          steps.upstream.outputs.skip == 'false' &&
-          steps.compare.outputs.skip   == 'false' &&
-          steps.branch_check.outputs.skip == 'false'
+          steps.upstream.outputs.skip    == 'false' &&
+          steps.compare.outputs.skip     == 'false' &&
+          steps.branch_check.outputs.skip == 'false' &&
+          steps.commit.outputs.pushed    == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # PAT_TOKEN is a fine-grained or classic PAT stored as a repo secret.
+          # It is preferred because GITHUB_TOKEN requires the repo setting
+          # "Allow GitHub Actions to create and approve pull requests" to be on.
+          # Fall back to GITHUB_TOKEN if PAT_TOKEN is not configured.
+          GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           TAG="${{ steps.upstream.outputs.tag }}"
           BRANCH="${{ steps.branch_check.outputs.branch }}"
