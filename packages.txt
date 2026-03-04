@@ -15,7 +15,6 @@ signal-desktop
 slurp
 swappy
 wl-clipboard
-# wl-gammactl  # AUR
 atuin
 bat
 direnv
@@ -38,6 +37,16 @@ discord
 obsidian
 zotero
 zk
+# Apps from configs
+chromium
+playerctl
+navi
+spotify-launcher
+blueman
+bitwarden
+xdg-desktop-portal-gtk
+xdg-desktop-portal-hyprland
+gtklock
 # nil  # AUR or manual
 
 # System dependencies
@@ -45,7 +54,6 @@ networkmanager
 bluez
 bluez-utils
 pipewire
-# pipewire-audio  # Not a valid Arch package
 pipewire-pulse
 pipewire-alsa
 wireplumber
@@ -59,6 +67,8 @@ nix-direnv
 nix-your-shell
 vicinae  # home/isabel/gui/vicinae
 quickshell  # home/isabel/gui/quickshell
+# cosmic-files  # From configs - AUR
+cosmic-files-git
 # izvim  # Custom Neovim config from inputs.izvim
 # gh-eco  # gh extension
 # NO ARCH EQUIVALENT — needs manual solution
