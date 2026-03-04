@@ -1,0 +1,159 @@
+[alias]
+	af = "!git add $(git ls-files -m -o --exclude-standard | fzf -m)"
+	br = "branch"
+	c = "commit -m"
+	ca = "commit -am"
+	co = "checkout"
+	d = "diff"
+	df = "!git hist | peco | awk '{print $2}' | xargs -I {} git diff {}^ {}"
+	fuck = "commit --amend -m"
+	fuggit = "!git add . && git commit --amend --no-edit && git push --force"
+	graph = "log --all --decorate --graph"
+	hist = "log --pretty=format:\"%Cgreen%h %Creset%cd %Cblue[%cn] %Creset%s%C(yellow)%d%C(reset)\" --graph --date=relative --decorate --all\n"
+	idc = "!git commit -am '$(curl -s https://whatthecommit.com/index.txt)'"
+	llog = "log --graph --name-status --pretty=format:\"%C(red)%h %C(reset)(%cd) %C(green)%an %Creset%s %C(yellow)%d%Creset\" --date=relative\n"
+	pl = "!git pull origin $(git rev-parse --abbrev-ref HEAD)"
+	ps = "!git push origin $(git rev-parse --abbrev-ref HEAD)"
+	st = "status"
+
+[branch]
+	autosetupmerge = "true"
+	sort = "committerdate"
+
+[color]
+	ui = "auto"
+
+[commit]
+	gpgSign = true
+	verbose = true
+
+[core]
+	pager = "/nix/store/mi9mw6wg4aizrxfs1qg6axpqni10d179-delta-0.18.2/bin/delta"
+	whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol"
+
+[credential "https://gist.github.com"]
+	helper = ""
+	helper = "/nix/store/x0nqj95k7dbxw4d1vvsckqgl6lhmxhf1-gh-2.87.3/bin/gh auth git-credential"
+
+[credential "https://github.com"]
+	helper = ""
+	helper = "/nix/store/x0nqj95k7dbxw4d1vvsckqgl6lhmxhf1-gh-2.87.3/bin/gh auth git-credential"
+
+[delta]
+	features = "catppuccin-mocha"
+	line-numbers = true
+	navigate = true
+	side-by-side = true
+
+[diff]
+	algorithm = "histogram"
+	colorMoved = "plain"
+	mnemonicprefix = true
+
+[fetch]
+	fsckObjects = true
+	prune = true
+
+[gpg]
+	format = "ssh"
+
+[gpg "ssh"]
+	program = "/nix/store/vlhrk50xg0lmivk049q8yygbsm86l6m0-openssh-10.2p1/bin/ssh-keygen"
+
+[help]
+	autocorrect = 10
+
+[init]
+	defaultBranch = "main"
+
+[interactive]
+	diffFilter = "/nix/store/mi9mw6wg4aizrxfs1qg6axpqni10d179-delta-0.18.2/bin/delta --color-only"
+
+[merge]
+	conflictstyle = "zdiff3"
+	stat = "true"
+	tool = "meld"
+
+[pull]
+	default = "current"
+	ff = "only"
+
+[push]
+	autoSetupRemote = true
+
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
+
+[receive]
+	fsckObjects = true
+
+[repack]
+	usedeltabaseoffset = "true"
+
+[rerere]
+	autoupdate = true
+	enabled = true
+
+[tag]
+	gpgSign = true
+
+[transfer]
+	fsckObjects = true
+
+[url "https://aur.archlinux.org/"]
+	insteadOf = "aur:"
+
+[url "https://codeberg.org/"]
+	insteadOf = "codeberg:"
+
+[url "https://git.isabelroses.com/"]
+	insteadOf = "me:"
+
+[url "https://git.sr.ht/"]
+	insteadOf = "srht:"
+
+[url "https://github.com/"]
+	insteadOf = "github:"
+
+[url "https://gitlab.com/"]
+	insteadOf = "gitlab:"
+
+[url "https://tangled.org/"]
+	insteadOf = "tangled:"
+
+[url "ssh://aur@aur.archlinux.org/"]
+	pushInsteadOf = "aur:"
+
+[url "ssh://git@codeberg.org/"]
+	pushInsteadOf = "codeberg:"
+
+[url "ssh://git@git.isabelroses.com/"]
+	pushInsteadOf = "me:"
+
+[url "ssh://git@git.sr.ht/"]
+	pushInsteadOf = "srht:"
+
+[url "ssh://git@github.com/"]
+	pushInsteadOf = "github:"
+
+[url "ssh://git@gitlab.com/"]
+	pushInsteadOf = "gitlab:"
+
+[url "ssh://git@tangled.org/"]
+	pushInsteadOf = "tangled:"
+
+[user]
+	email = "isabel@isabelroses.com"
+	name = "isabel"
+	signingKey = "/home/isabel/.ssh/id_ed25519.pub"
+
+[include]
+	path = "/nix/store/vmmgaga4j0mljpnbynlwpnqwb31kk7y5-catppuccin-delta-0/catppuccin.gitconfig"
+
+[includeIf "gitdir:~/dev/uni/"]
+	path = "/home/isabel/.config/sops-nix/secrets/uni-gitconf"
+
+[includeIf "gitdir:~/Dev/uni/"]
+	path = "/home/isabel/.config/sops-nix/secrets/uni-gitconf"

@@ -1,0 +1,51 @@
+{
+  "extensions": {
+    "betterCodeblocks": true,
+    "betterEmbedsYT": true,
+    "clearUrls": true,
+    "cloneExpressions": true,
+    "copyWebp": true,
+    "disableSentry": true,
+    "domOptimizer": true,
+    "experiments": true,
+    "favouriteGifSearch": true,
+    "freeMoji": false,
+    "freeScreenShare": true,
+    "greentext": false,
+    "httpCats": true,
+    "inviteToNowhere": true,
+    "lastFmRpc": false,
+    "memberCount": true,
+    "moonbase": true,
+    "nativeFixes": {
+      "config": {
+        "vaapiIgnoreDriverChecks": true
+      },
+      "enabled": true
+    },
+    "noHideToken": true,
+    "noReplyChainNag": true,
+    "noTrack": true,
+    "onePingPerDM": true,
+    "pronouns": true,
+    "textReplacer": {
+      "config": {
+        "patterns": {
+          "://instagram.com/": "://vxinstagram.com/",
+          "://reddit.com/": "://rxddit.com/",
+          "://tiktok.com/": "://tnktok.com/",
+          "://twitter.com/": "://vxtwitter.com/",
+          "://vm.tiktok.com/": "://vm.tnktok.com/",
+          "://www.instagram.com/": "://vxinstagram.com/",
+          "://www.reddit.com/": "://rxddit.com/",
+          "://x.com/": "://vxtwitter.com/"
+        }
+      },
+      "enabled": true
+    },
+    "volumeManipulator": true
+  },
+  "repositories": [
+    "https://moonlight-mod.github.io/extensions-dist/repo.json"
+  ]
+}

@@ -1,0 +1,10 @@
+gtk-cursor-theme-name = "catppuccin-mocha-dark-cursors"
+gtk-cursor-theme-size = 24
+gtk-font-name = "Berkeley Mono 14"
+gtk-icon-theme-name = "Papirus-Dark"
+gtk-theme-name = "catppuccin-mocha-pink-standard"
+gtk-xft-antialias=1
+gtk-xft-hinting=1
+gtk-xft-hintstyle="hintslight"
+gtk-xft-rgba="rgb"
+

@@ -1,0 +1,9 @@
+[template-aliases]
+"format_short_signature(signature)" = "signature.email().local()"
+
+[ui]
+default-command = "status"
+
+[user]
+email = "isabel@isabelroses.com"
+name = "isabel"

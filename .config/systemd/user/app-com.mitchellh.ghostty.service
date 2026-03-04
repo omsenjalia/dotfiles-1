@@ -1,0 +1,14 @@
+[Unit]
+Description=Ghostty
+After=graphical-session.target
+After=dbus.socket
+Requires=dbus.socket
+
+[Service]
+Type=notify-reload
+ReloadSignal=SIGUSR2
+BusName=com.mitchellh.ghostty
+ExecStart=/nix/store/yhhj6km68s7md024qadslycanfyhh7pf-ghostty-1.2.3/bin/ghostty --gtk-single-instance=true --initial-window=false
+
+[Install]
+WantedBy=graphical-session.target
