@@ -1,0 +1,15 @@
+{
+  "theme": {
+    "dark": {
+      "iconTheme": "Catppuccin Mocha Pink",
+      "name": "catppuccin-mocha"
+    },
+    "light": {
+      "iconTheme": "Catppuccin Mocha Pink",
+      "name": "catppuccin-mocha"
+    }
+  },
+  "window": {
+    "opacity": 1
+  }
+}

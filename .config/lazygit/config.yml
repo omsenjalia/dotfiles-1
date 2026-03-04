@@ -1,0 +1,10 @@
+git:
+  overrideGpg: true
+  pagers:
+  - pager: delta --paging=never
+gui:
+  authorColors:
+    isabel: '#f5c2e7'
+  nerdFontsVersion: 3
+update:
+  method: never
