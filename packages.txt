@@ -39,7 +39,7 @@ wakatime
 zzz, nix-direnv, nix-your-shell,
 
 # Wayland utilities
-wl-gammactl, wl-clipboard-rs, rofi-wayland, hyprpicker,
+wl-gammactl, rofi-wayland, hyprpicker,
 
 # Desktop / apps
 quickshell, ghostty, cosmic-files, cake-wallet, vicinae,
