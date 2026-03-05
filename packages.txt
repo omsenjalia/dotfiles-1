@@ -29,7 +29,7 @@ networkmanager, bluez, bluez-utils, tailscale,
 pipewire, pipewire-audio, pipewire-pulse, pipewire-alsa, wireplumber, rnnoise,
 
 # Theme / Qt
-kvantum, qt6ct, glib,
+kvantum, qt6ct, glib2,
 
 # Package tools
 wakatime
