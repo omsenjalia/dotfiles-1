@@ -3,7 +3,7 @@
 # Commands that should be applied only for interactive shells.
 [[ $- == *i* ]] || return
 
-HISTFILE="/home/isabel/.local/state/bash/history"
+HISTFILE="/home/om/.local/state/bash/history"
 HISTFILESIZE=1000
 HISTSIZE=100
 mkdir -p "$(dirname "$HISTFILE")"
