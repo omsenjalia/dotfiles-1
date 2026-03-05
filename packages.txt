@@ -1,4 +1,4 @@
-# [pacman]
+[pacman]
 # Core utilities
 glow
 jq
@@ -58,7 +58,7 @@ pipewire-pulse
 pipewire-alsa
 wireplumber
 
-# [aur]
+[aur]
 # zzz  # tgirlpkgs.packages.zzz - No Arch equivalent
 cake-wallet
 wl-gammactl
