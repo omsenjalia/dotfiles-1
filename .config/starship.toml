@@ -1,5 +1,5 @@
 add_newline = true
-format = "[╭╴](238)$os$all[╰─󰁔](237)$character"
+format = "[╭╴](238)$os$all[╰─󰁔](237) "
 
 [battery]
 disabled = true

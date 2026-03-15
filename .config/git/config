@@ -108,6 +108,9 @@
 [url "https://codeberg.org/"]
 	insteadOf = "codeberg:"
 
+[url "https://git.isabelroses.com/"]
+	insteadOf = "me:"
+
 [url "https://git.sr.ht/"]
 	insteadOf = "srht:"
 
@@ -126,6 +129,9 @@
 [url "ssh://git@codeberg.org/"]
 	pushInsteadOf = "codeberg:"
 
+[url "ssh://git@git.isabelroses.com/"]
+	pushInsteadOf = "me:"
+
 [url "ssh://git@git.sr.ht/"]
 	pushInsteadOf = "srht:"
 
@@ -139,10 +145,15 @@
 	pushInsteadOf = "tangled:"
 
 [user]
-	email = ""
-	name = "om"
-	signingKey = "/home/om/.ssh/id_ed25519.pub"
+	email = "isabel@isabelroses.com"
+	name = "isabel"
+	signingKey = "/home/isabel/.ssh/id_ed25519.pub"
 
 [include]
 	path = "/nix/store/vmmgaga4j0mljpnbynlwpnqwb31kk7y5-catppuccin-delta-0/catppuccin.gitconfig"
 
+[includeIf "gitdir:~/dev/uni/"]
+	path = "/home/isabel/.config/sops-nix/secrets/uni-gitconf"
+
+[includeIf "gitdir:~/Dev/uni/"]
+	path = "/home/isabel/.config/sops-nix/secrets/uni-gitconf"
