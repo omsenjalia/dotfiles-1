@@ -8,7 +8,7 @@ Requires=dbus.socket
 Type=notify-reload
 ReloadSignal=SIGUSR2
 BusName=com.mitchellh.ghostty
-ExecStart=/nix/store/yhhj6km68s7md024qadslycanfyhh7pf-ghostty-1.2.3/bin/ghostty --gtk-single-instance=true --initial-window=false
+ExecStart=/nix/store/gjg30k1xbw0cs5l8sdd8rbplnnn8f9sv-ghostty-1.3.0/bin/ghostty --gtk-single-instance=true --initial-window=false
 
 [Install]
 WantedBy=graphical-session.target

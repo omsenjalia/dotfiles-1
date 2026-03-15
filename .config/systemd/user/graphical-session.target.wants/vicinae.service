@@ -2,11 +2,12 @@
 WantedBy=graphical-session.target
 
 [Service]
-ExecStart=/nix/store/bwmh2iz7wpn2466q8p40jcmy95biika6-vicinae-0.19.9/bin/vicinae server
+ExecStart=/nix/store/r4xbgs2iy4hc4fhyfwgkih0fylrgs4pv-vicinae-0.20.3/bin/vicinae server
 KillMode=process
 Restart=always
 RestartSec=5
 Type=simple
+X-Restart-Triggers=/nix/store/d2blfj81jbv05d9k9668xhkh5dg3mk57-vicinae-settings
 
 [Unit]
 After=graphical-session.target

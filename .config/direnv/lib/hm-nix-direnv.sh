@@ -3,7 +3,7 @@
 
 
 # begin prologue inserted by resholve
-NIX_DIRENV_FALLBACK_NIX=${NIX_DIRENV_FALLBACK_NIX:-/nix/store/zicbnkx5psxs2bvxr5rw7q6g9m8nnzyv-lix-2.95.0-pre-20260103_d387c9113c73/bin/nix}
+NIX_DIRENV_FALLBACK_NIX=${NIX_DIRENV_FALLBACK_NIX:-/nix/store/4f7i59zcb4hh617g6rjl2fa8jx16xnb9-lix-2.95.0-pre-20260103_d387c9113c73/bin/nix}
 
 # end prologue inserted by resholve
 NIX_DIRENV_VERSION=3.1.1
