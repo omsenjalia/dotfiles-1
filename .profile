@@ -1,4 +1,4 @@
-. "/nix/store/7dsnv272g6jqjh0fkb6c7zxixx5ccbhn-hm-session-vars.sh/etc/profile.d/hm-session-vars.sh"
+. "/nix/store/d8csi2984f445mgcgx2g5dp8pm7cprkl-hm-session-vars.sh/etc/profile.d/hm-session-vars.sh"
 
 
 
