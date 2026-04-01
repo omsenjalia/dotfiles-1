@@ -1,8 +1,6 @@
 background-opacity = 0.950000
 command = /run/current-system/sw/bin/fish
 cursor-style = bar
-font-family = Berkeley Mono
-font-size = 13
 gtk-titlebar = false
 keybind = super+u=copy_url_to_clipboard
 shell-integration = none
