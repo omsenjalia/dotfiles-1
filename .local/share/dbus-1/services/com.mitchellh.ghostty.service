@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=com.mitchellh.ghostty
+SystemdService=app-com.mitchellh.ghostty.service
+Exec=/nix/store/ah86d6ckmmx3bflam3ar6pqdskkllxr6-ghostty-1.3.1/bin/ghostty --gtk-single-instance=true --initial-window=false

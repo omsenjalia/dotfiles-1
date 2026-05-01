@@ -4,7 +4,7 @@ git:
   - pager: delta --paging=never
 gui:
   authorColors:
-    om: '#f5c2e7'
+    isabel: '#f5c2e7'
   nerdFontsVersion: 3
 update:
   method: never
