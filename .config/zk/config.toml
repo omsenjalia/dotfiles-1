@@ -1,20 +1,20 @@
 [alias]
-editlast = "zk edit --limit 1 --sort modified- $@"
-hist = "zk list --format path --delimiter0 --quiet $@ | xargs -t -0 git log --patch --"
-list = "zk list --quiet -f oneline $@"
-ls = "zk list $@"
-path = "zk list --quiet --format {{path}} --delimiter , $@"
+editlast = 'zk edit --limit 1 --sort modified- $@'
+hist = 'zk list --format path --delimiter0 --quiet $@ | xargs -t -0 git log --patch --'
+list = 'zk list --quiet -f oneline $@'
+ls = 'zk list $@'
+path = 'zk list --quiet --format {{path}} --delimiter , $@'
 recent = "zk edit --sort created- --created-after 'last two weeks' --interactive"
-search = "zk list -i $@"
-tags = "zk tag list $@"
-wc = "zk list --sort word-count $@"
+search = 'zk list -i $@'
+tags = 'zk tag list $@'
+wc = 'zk list --sort word-count $@'
 
 [note]
-default-title = "untitled"
-id-charset = "hex"
+default-title = 'untitled'
+id-charset = 'hex'
 id-length = 6
 
 [tool]
-editor = "nvim"
-fzf-preview = "bat -p --color always {-1}"
-pager = "less -FR"
+editor = 'nvim'
+fzf-preview = 'bat -p --color always {-1}'
+pager = 'less -FR'

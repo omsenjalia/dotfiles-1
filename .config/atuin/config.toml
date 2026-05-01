@@ -1,10 +1,10 @@
-dialect = "uk"
+dialect = 'uk'
 inline_height = 30
 show_preview = true
-style = "compact"
-# sync_address = "https://atuin.isabelroses.com"  # set your own
-sync_frequency = "5m"
+style = 'compact'
+sync_address = 'https://atuin.isabelroses.com'
+sync_frequency = '5m'
 update_check = false
 
 [theme]
-name = "catppuccin-mocha-pink"
+name = 'catppuccin-mocha-pink'

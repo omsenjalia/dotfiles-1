@@ -1,124 +1,124 @@
 add_newline = true
-format = "[╭╴](238)$os$all[╰─󰁔](237)$character"
+format = '[╭╴](238)$os$all[╰─󰁔](237) '
 
 [battery]
 disabled = true
 
 [c]
-format = "[$symbol]($style)"
-symbol = " "
+format = '[$symbol]($style)'
+symbol = ' '
 
 [character]
 disabled = true
 
 [container]
-format = "[$symbol]($style)"
-symbol = "󰏖"
+format = '[$symbol]($style)'
+symbol = '󰏖'
 
 [directory]
-format = "at [$path]($style)[$read_only]($read_only_style) "
-home_symbol = "󰋞 "
-read_only = "  "
-read_only_style = "197"
+format = 'at [$path]($style)[$read_only]($read_only_style) '
+home_symbol = '󰋞 '
+read_only = '  '
+read_only_style = '197'
 truncation_length = 3
-truncation_symbol = "…/"
+truncation_symbol = '…/'
 
 [directory.substitutions]
-"󰋞 /.config" = " "
-"󰋞 /Dev" = "󱌢 "
-"󰋞 /Documents" = "󰈙 "
-"󰋞 /Downloads" = " "
-"󰋞 /Music" = " "
-"󰋞 /Pictures" = " "
-"󰋞 /Videos" = " "
-"󰋞 /dev" = "󱌢 "
-"󰋞 /documents" = "󰈙 "
-"󰋞 /downloads" = " "
-"󰋞 /media/music" = " "
-"󰋞 /media/pictures" = " "
-"󰋞 /media/videos" = " "
-"󰋞 /skl" = "󰑴 "
+'󰋞 /.config' = ' '
+'󰋞 /Dev' = '󱌢 '
+'󰋞 /Documents' = '󰈙 '
+'󰋞 /Downloads' = ' '
+'󰋞 /Music' = ' '
+'󰋞 /Pictures' = ' '
+'󰋞 /Videos' = ' '
+'󰋞 /dev' = '󱌢 '
+'󰋞 /documents' = '󰈙 '
+'󰋞 /downloads' = ' '
+'󰋞 /media/music' = ' '
+'󰋞 /media/pictures' = ' '
+'󰋞 /media/videos' = ' '
+'󰋞 /skl' = '󰑴 '
 
 [docker_context]
-format = "[$symbol]($style)"
-symbol = " "
+format = '[$symbol]($style)'
+symbol = ' '
 
 [git_branch]
-format = "on [$symbol$branch]($style) "
-style = "bold green"
-symbol = "󰊢 "
+format = 'on [$symbol$branch]($style) '
+style = 'bold green'
+symbol = '󰊢 '
 truncation_length = 4
-truncation_symbol = "…/"
+truncation_symbol = '…/'
 
 [git_status]
-ahead = "⇡${count}"
-behind = "⇣${count}"
-conflicted = "🏳"
-deleted = " "
-diverged = "⇕⇡${ahead_count}⇣${behind_count}"
-format = "[\\($all_status$ahead_behind\\)]($style) "
-modified = " "
-renamed = "󰖷 "
-staged = "[++\\($count\\)](green)"
-stashed = "󰏗 "
-style = "bold green"
-untracked = " "
-up_to_date = " "
+ahead = '⇡${count}'
+behind = '⇣${count}'
+conflicted = '🏳'
+deleted = ' '
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+format = '[\($all_status$ahead_behind\)]($style) '
+modified = ' '
+renamed = '󰖷 '
+staged = '[++\($count\)](green)'
+stashed = '󰏗 '
+style = 'bold green'
+untracked = ' '
+up_to_date = ' '
 
 [golang]
-format = "[$symbol]($style)"
-symbol = ""
+format = '[$symbol]($style)'
+symbol = ''
 
 [java]
-format = "[$symbol]($style)"
-symbol = " "
+format = '[$symbol]($style)'
+symbol = ' '
 
 [lua]
-format = "[$symbol]($style)"
-symbol = "󰢱 "
+format = '[$symbol]($style)'
+symbol = '󰢱 '
 
 [nix_shell]
-format = "[$symbol]($style)"
-symbol = " "
+format = '[$symbol]($style)'
+symbol = ' '
 
 [nodejs]
-format = "[$symbol]($style)"
-symbol = " "
+format = '[$symbol]($style)'
+symbol = ' '
 
 [os]
-format = "[$symbol]($style)"
-style = "bold white"
+format = '[$symbol]($style)'
+style = 'bold white'
 
 [os.symbols]
-Alpine = ""
-Arch = ""
-Artix = ""
-CentOS = ""
-Debian = ""
-EndeavourOS = ""
-Fedora = ""
-Gentoo = ""
-Linux = ""
-Macos = "󰀵"
-Manjaro = ""
-Mint = ""
-NixOS = ""
-Raspbian = ""
-SUSE = ""
-Ubuntu = ""
-Windows = ""
-openSUSE = ""
+Alpine = ''
+Arch = ''
+Artix = ''
+CentOS = ''
+Debian = ''
+EndeavourOS = ''
+Fedora = ''
+Gentoo = ''
+Linux = ''
+Macos = '󰀵'
+Manjaro = ''
+Mint = ''
+NixOS = ''
+Raspbian = ''
+SUSE = ''
+Ubuntu = ''
+Windows = ''
+openSUSE = ''
 
 [python]
-format = "[$symbol]($style)"
-symbol = ""
+format = '[$symbol]($style)'
+symbol = ''
 
 [rust]
-format = "[$symbol]($style)"
-symbol = ""
+format = '[$symbol]($style)'
+symbol = ''
 
 [username]
-format = "[$user]($style) "
+format = '[$user]($style) '
 show_always = true
-style_root = "black"
-style_user = "white"
+style_root = 'black'
+style_user = 'white'
