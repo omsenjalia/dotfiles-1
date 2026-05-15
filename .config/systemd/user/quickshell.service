@@ -2,7 +2,7 @@
 WantedBy=graphical-session.target
 
 [Service]
-ExecStart=/nix/store/33i20p83d5fg3ms8wdadhs8s0bfz5lkb-quickshell-wrapped/bin/quickshell
+ExecStart=/nix/store/y2ckzcqr8svjbxjch0j6m5yl14nq8y4i-quickshell-wrapped/bin/quickshell
 Restart=on-failure
 
 [Unit]

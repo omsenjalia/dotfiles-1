@@ -5,19 +5,17 @@
 set -q __fish_home_manager_config_sourced; and exit
 set -g __fish_home_manager_config_sourced 1
 
-source /nix/store/3s0hw822ym91zgvk8wx3di5i6x9x9gdr-hm-session-vars.fish/etc/profile.d/hm-session-vars.fish
+source /nix/store/fpqcf5by1mhspvyyldr09n2plvhvaf9r-hm-session-vars.fish/etc/profile.d/hm-session-vars.fish
 
 # Source handler functions
 
-fish_config theme choose "Catppuccin Mocha"
+fish_config theme choose catppuccin-mocha
 
 # themeing
 set fish_greeting
 set -g theme_display_date no
 set -g theme_nerd_fonts yes
 set -g theme_newline_cursor yes
-
-/nix/store/vwy0pl0183g9p178pjx0icid9rs7jbx3-navi-2.24.0/bin/navi widget fish | source
 
 status is-login; and begin
 
@@ -42,20 +40,18 @@ status is-interactive; and begin
     alias lt 'eza --tree'
     alias mkdir 'mkdir -pv'
     alias rs 'systemctl reboot'
-    alias zzzbk 'cd ~/.local/share/zzz ; git add . ; git commit -m '\''chore: sync changes'\'' ; git push ; cd -'
-    alias zzzpl 'cd ~/.local/share/zzz ; git pull ; git push ; cd -'
 
     # Interactive shell initialisation
-    /nix/store/8jrz43k4f0fx07rffm4mc5wa90xhdcs0-fzf-0.68.0/bin/fzf --fish | source
+    /nix/store/1fc3iszabni2f7rnvdx49db2350qck7n-fzf-0.72.0/bin/fzf --fish | source
 
-    /nix/store/bgzs7s82drfwanhmkj2lfim8xn2yzmw6-zoxide-0.9.9/bin/zoxide init fish --cmd cd | source
+    /nix/store/48wm0a2qb8q96fmlyj3cbfxj7h8bqfbf-zoxide-0.9.9/bin/zoxide init fish --cmd cd | source
 
     if test "$TERM" != dumb
-        /nix/store/s3fniw0gqhh5vl9w3v8yj5bd0hqi5nj2-starship-1.24.2/bin/starship init fish | source
+        /nix/store/9b20lz5hla3573b8xn7j84d1c78y6sqm-starship-1.25.1/bin/starship init fish | source
 
     end
 
-    /nix/store/fwfdg3rwk24zxh81i027ifkbifpdkial-nix-your-shell-1.4.8/bin/nix-your-shell fish | source
+    /nix/store/s8vwakyivbh1bn67aghv2c4d5m28vzpa-nix-your-shell-1.4.10/bin/nix-your-shell fish | source
 
     if set -q GHOSTTY_RESOURCES_DIR
         source "$GHOSTTY_RESOURCES_DIR/shell-integration/fish/vendor_conf.d/ghostty-shell-integration.fish"
@@ -68,11 +64,13 @@ status is-interactive; and begin
         set -l post_joined (string replace $prev_joined "" $joined)
         set -l prev (string split " " (string trim $prev_joined))
         set -l post (string split " " (string trim $post_joined))
-        set fish_complete_path $prev "/home/om/.local/share/fish/home-manager/generated_completions" $post
+        set fish_complete_path $prev "/home/isabel/.local/share/fish/home-manager/generated_completions" $post
     end
 
-    /nix/store/q5zwmzl587wfcpqgixq4gydw8qkcxrs7-atuin-18.12.1/bin/atuin init fish --disable-up-arrow | source
+    source /nix/store/f0fyvsrnfqlxfac2d40xqm3m3l5lg689-atuin-fish-config.fish
 
-    /nix/store/facg208fw2bgsg7w0f13k5iwkp8lnsi4-direnv-2.37.1/bin/direnv hook fish | source
+    if not functions -q __direnv_export_eval
+        /nix/store/d9mff3xzmx9ilj83mif6819rpd7m8mj7-direnv-2.37.1/bin/direnv hook fish | source
+    end
 
 end
