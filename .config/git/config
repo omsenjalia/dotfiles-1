@@ -28,16 +28,15 @@
 	verbose = true
 
 [core]
-	pager = "/nix/store/mi9mw6wg4aizrxfs1qg6axpqni10d179-delta-0.18.2/bin/delta"
 	whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol"
 
 [credential "https://gist.github.com"]
 	helper = ""
-	helper = "/nix/store/x0nqj95k7dbxw4d1vvsckqgl6lhmxhf1-gh-2.87.3/bin/gh auth git-credential"
+	helper = "/nix/store/fxvyz1dx5wp87qgbd6dfkmqqb4fypm3b-gh-2.93.0/bin/gh auth git-credential"
 
 [credential "https://github.com"]
 	helper = ""
-	helper = "/nix/store/x0nqj95k7dbxw4d1vvsckqgl6lhmxhf1-gh-2.87.3/bin/gh auth git-credential"
+	helper = "/nix/store/fxvyz1dx5wp87qgbd6dfkmqqb4fypm3b-gh-2.93.0/bin/gh auth git-credential"
 
 [delta]
 	features = "catppuccin-mocha"
@@ -58,7 +57,7 @@
 	format = "ssh"
 
 [gpg "ssh"]
-	program = "/nix/store/vlhrk50xg0lmivk049q8yygbsm86l6m0-openssh-10.2p1/bin/ssh-keygen"
+	program = "/nix/store/mpzrhvrkdzkajhgay1dngqpf062vb1iq-openssh-10.3p1/bin/ssh-keygen"
 
 [help]
 	autocorrect = 10
@@ -67,12 +66,18 @@
 	defaultBranch = "main"
 
 [interactive]
-	diffFilter = "/nix/store/mi9mw6wg4aizrxfs1qg6axpqni10d179-delta-0.18.2/bin/delta --color-only"
+	diffFilter = "/nix/store/hbxz2p9qsjq7hjmj41p40saanlih22bd-delta-0.19.2/bin/delta --color-only"
 
 [merge]
 	conflictstyle = "zdiff3"
 	stat = "true"
 	tool = "meld"
+
+[pager]
+	blame = "/nix/store/hbxz2p9qsjq7hjmj41p40saanlih22bd-delta-0.19.2/bin/delta"
+	diff = "/nix/store/hbxz2p9qsjq7hjmj41p40saanlih22bd-delta-0.19.2/bin/delta"
+	log = "/nix/store/hbxz2p9qsjq7hjmj41p40saanlih22bd-delta-0.19.2/bin/delta"
+	show = "/nix/store/hbxz2p9qsjq7hjmj41p40saanlih22bd-delta-0.19.2/bin/delta"
 
 [pull]
 	default = "current"
@@ -108,6 +113,9 @@
 [url "https://codeberg.org/"]
 	insteadOf = "codeberg:"
 
+[url "https://git.isabelroses.com/"]
+	insteadOf = "me:"
+
 [url "https://git.sr.ht/"]
 	insteadOf = "srht:"
 
@@ -126,6 +134,9 @@
 [url "ssh://git@codeberg.org/"]
 	pushInsteadOf = "codeberg:"
 
+[url "ssh://git@git.isabelroses.com/"]
+	pushInsteadOf = "me:"
+
 [url "ssh://git@git.sr.ht/"]
 	pushInsteadOf = "srht:"
 
@@ -139,10 +150,9 @@
 	pushInsteadOf = "tangled:"
 
 [user]
-	email = ""
-	name = "om"
-	signingKey = "/home/om/.ssh/id_ed25519.pub"
+	email = "isabel@isabelroses.com"
+	name = "isabel"
+	signingKey = "/home/isabel/.ssh/id_ed25519.pub"
 
 [include]
-	path = "/nix/store/vmmgaga4j0mljpnbynlwpnqwb31kk7y5-catppuccin-delta-0/catppuccin.gitconfig"
-
+	path = "/nix/store/xh5z7fbqj4dk73y8yn45rf6k99mdq553-catppuccin-delta-0-unstable-2025-10-14/catppuccin.gitconfig"

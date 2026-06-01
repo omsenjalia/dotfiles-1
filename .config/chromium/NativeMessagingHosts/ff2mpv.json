@@ -1,7 +1,7 @@
 {
   "name": "ff2mpv",
   "description": "ff2mpv's external manifest",
-  "path": "/nix/store/acqc6j00pizf543aifarq9bm12vm8rjf-ff2mpv-rust-1.1.7/bin/ff2mpv-rust",
+  "path": "/nix/store/71bgrh784bb47f3gzw5n5icghd1zc1zc-ff2mpv-rust-1.1.7/bin/ff2mpv-rust",
   "type": "stdio",
   "allowed_origins": [
     "chrome-extension://ephjcajbkgplkjmelpglennepbpmdpjg/"
