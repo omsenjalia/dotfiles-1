@@ -1,10 +1,10 @@
 git:
   overrideGpg: true
   pagers:
-  - pager: delta --paging=never
+  - pager: delta '--paging=never' --line-numbers --hyperlinks '--hyperlinks-file-link-format=lazygit-edit://{path}:{line}'
 gui:
   authorColors:
-    om: '#f5c2e7'
+    isabel: '#f5c2e7'
   nerdFontsVersion: 3
 update:
   method: never
