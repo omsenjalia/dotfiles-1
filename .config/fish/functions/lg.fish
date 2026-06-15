@@ -1,5 +1,5 @@
 function lg
-    set -x LAZYGIT_NEW_DIR_FILE ~/.lazygit/newdir
+    set -x LAZYGIT_NEW_DIR_FILE /home/isabel/.cache/lazygit/newdir
     command lazygit $argv
     if test -f $LAZYGIT_NEW_DIR_FILE
         cd (cat $LAZYGIT_NEW_DIR_FILE)

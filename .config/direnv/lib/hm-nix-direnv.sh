@@ -3,10 +3,10 @@
 
 
 # begin prologue inserted by resholve
-NIX_DIRENV_FALLBACK_NIX=${NIX_DIRENV_FALLBACK_NIX:-/nix/store/zicbnkx5psxs2bvxr5rw7q6g9m8nnzyv-lix-2.95.0-pre-20260103_d387c9113c73/bin/nix}
+NIX_DIRENV_FALLBACK_NIX=${NIX_DIRENV_FALLBACK_NIX:-/nix/store/vy0agnn5cbpig65rj5hpily6s0lya5g1-lix-2.96.0-pre-20260614-c019a776e9ea/bin/nix}
 
 # end prologue inserted by resholve
-NIX_DIRENV_VERSION=3.1.1
+NIX_DIRENV_VERSION=3.1.2
 
 # min required versions
 BASH_MIN_VERSION=4.4
@@ -43,9 +43,9 @@ _nix() {
 
 _require_version() {
   local cmd=$1 raw_version=$2 version=${2%%[^0-9.]*} required=$3
-  if ! printf "%s\n" "$required" "$version" | LC_ALL=C /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/sort -c -V 2>/dev/null; then
+  if ! printf "%s\n" "$required" "$version" | LC_ALL=C /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/sort -c -V 2>/dev/null; then
     _nix_direnv_error \
-      "minimum required $(/nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/basename "$cmd") version is $required (installed: $raw_version)"
+      "minimum required $(/nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/basename "$cmd") version is $required (installed: $raw_version)"
     return 1
   fi
 }
@@ -93,7 +93,7 @@ _nix_direnv_preflight() {
   layout_dir=$(direnv_layout_dir)
 
   if [[ ! -d "$layout_dir/bin" ]]; then
-    /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/mkdir -p "$layout_dir/bin"
+    /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/mkdir -p "$layout_dir/bin"
   fi
   # N.B. This script relies on variable expansion in *this* shell.
   # (i.e. The written out file will have the variables expanded)
@@ -102,8 +102,8 @@ _nix_direnv_preflight() {
   # we can't assume to be able to reverse it to get the source dir
   # So there's little to be done about this.
   # Remove first to handle case where file is owned by a different user
-  /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/rm -f "${layout_dir}/bin/nix-direnv-reload"
-  /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/cat >"${layout_dir}/bin/nix-direnv-reload" <<-EOF
+  /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/rm -f "${layout_dir}/bin/nix-direnv-reload"
+  /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/cat >"${layout_dir}/bin/nix-direnv-reload" <<-EOF
 #!/usr/bin/env bash
 set -e
 if [[ ! -d "$PWD" ]]; then
@@ -124,7 +124,7 @@ touch "$PWD/.envrc"
 # This makes sure that we know we are up to date.
 touch -r "$PWD/.envrc" "${layout_dir}"/*.rc
 EOF
-  /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/chmod +x "${layout_dir}/bin/nix-direnv-reload"
+  /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/chmod +x "${layout_dir}/bin/nix-direnv-reload"
 
   PATH_add "${layout_dir}/bin"
 }
@@ -170,7 +170,7 @@ _nix_import_env() {
   # Instead - just remove it immediately.
   # Use recursive & force as it may not be empty.
   if [[ -n ${NIX_BUILD_TOP+x} && $NIX_BUILD_TOP == */nix-shell.* && -d $NIX_BUILD_TOP ]]; then
-    /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/rm -rf "$NIX_BUILD_TOP"
+    /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/rm -rf "$NIX_BUILD_TOP"
   fi
 
   for key in "${!values_to_restore[@]}"; do
@@ -201,14 +201,14 @@ _nix_refresh_gcroots() {
   local layout_dir
   layout_dir=$(direnv_layout_dir)
 
-  /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/touch -h "${layout_dir}"/flake-profile-* "${layout_dir}"/flake-inputs/* "${layout_dir}"/nix-profile-*
+  /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/touch -h "${layout_dir}"/flake-profile-* "${layout_dir}"/flake-inputs/* "${layout_dir}"/nix-profile-*
 }
 
 _nix_clean_old_gcroots() {
   local layout_dir=$1
 
-  /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/rm -rf "$layout_dir/flake-inputs/"
-  /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/rm -f "$layout_dir"/{nix,flake}-profile*
+  /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/rm -rf "$layout_dir/flake-inputs/"
+  /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/rm -f "$layout_dir"/{nix,flake}-profile*
 }
 
 _nix_argsum_suffix() {
@@ -216,7 +216,7 @@ _nix_argsum_suffix() {
   if [ -n "$1" ]; then
 
     if has sha1sum; then
-      out=$(/nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/sha1sum <<<"$1")
+      out=$(/nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/sha1sum <<<"$1")
     elif has shasum; then
       out=$(shasum <<<"$1")
     else
@@ -323,23 +323,22 @@ use_flake() {
     profile_rc_missing=1
   fi
 
-  local file_nt_profilerc=0
   local file=
-  local newer_files
+  local newer_files=()
   for file in "${watches[@]}"; do
     if [[ $file -nt $profile_rc ]]; then
       newer_files+=("$file")
-      file_nt_profilerc=1
     fi
   done
 
-  if [[ $file_nt_profilerc -eq 1 ]]; then
+  if [[ ${#newer_files[@]} -gt 0 ]]; then
     _nix_direnv_info "cache invalidated: files newer than cache:"
     echo -n "$_NIX_DIRENV_LOG_PREFIX" >/dev/stderr
-    printf "%s\n" "${newer_files[@]}" >/dev/stderr
+    printf "%s\n" "${newer_files[@]:0:5}" >/dev/stderr
+    [[ ${#newer_files[@]} -gt 5 ]] && echo "And $((${#newer_files[@]} - 5)) more" >/dev/stderr
   fi
 
-  if [[ $profile_missing -eq 1 || $profile_rc_missing -eq 1 || $file_nt_profilerc -eq 1 ]]; then
+  if [[ $profile_missing -eq 1 || $profile_rc_missing -eq 1 || ${#newer_files[@]} -gt 0 ]]; then
     if [[ $_nix_direnv_manual_reload -eq 1 && -z ${_nix_direnv_force_reload-} ]]; then
       _nix_direnv_warn_manual_reload "$profile_rc"
 
@@ -353,11 +352,11 @@ use_flake() {
         # We need to update our cache
         echo "$tmp_profile_rc" >"$profile_rc"
         _nix_add_gcroot "$tmp_profile" "$profile"
-        /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/rm -f "$tmp_profile" "$tmp_profile"*
+        /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/rm -f "$tmp_profile" "$tmp_profile"*
 
         # also add garbage collection root for source
         local flake_input_paths
-        /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/mkdir -p "$flake_inputs"
+        /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/mkdir -p "$flake_inputs"
         flake_input_paths=$(_nix flake archive \
           --json --no-write-lock-file \
           -- "$flake_uri")
@@ -404,7 +403,8 @@ use_nix() {
 
   local layout_dir path version
   layout_dir=$(direnv_layout_dir)
-  if path=$(/nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/realpath -e "$(_nix eval --impure --expr "<nixpkgs>" 2>/dev/null)"); then
+  # NB: macOS has realpath, but only supports -q
+  if path=$(/nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/realpath "$(_nix eval --impure --expr "<nixpkgs>" 2>/dev/null)"); then
     if [[ -f "${path}/.version-suffix" ]]; then
       version=$(<"${path}/.version-suffix")
     elif [[ -f "${path}/.git/HEAD" ]]; then
@@ -420,7 +420,7 @@ use_nix() {
       # borrow some bits from the store path
       local version_prefix
       read -r version_prefix < <(
-        /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/cat "${path}/.version"
+        /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/cat "${path}/.version"
         echo
       )
       version="${version_prefix}-${path:11:16}"
@@ -488,7 +488,15 @@ use_nix() {
     esac
   done
 
-  watch_file "$HOME/.direnvrc" "$HOME/.config/direnv/direnvrc" "shell.nix" "default.nix"
+  local files_to_watch
+  files_to_watch=("$HOME/.direnvrc" "$HOME/.config/direnv/direnvrc" "shell.nix" "default.nix")
+  if [ -f "$nixfile" ]; then
+    files_to_watch+=("$nixfile")
+  elif [ -d "$nixfile" ]; then
+    files_to_watch+=("$nixfile/default.nix")
+  fi
+
+  watch_file files_to_watch
 
   local watches
   _nix_direnv_watches watches
@@ -505,23 +513,22 @@ use_nix() {
     profile_rc_missing=1
   fi
 
-  local file_nt_profilerc=0
   local file=
-  local newer_files
+  local newer_files=()
   for file in "${watches[@]}"; do
     if [[ $file -nt $profile_rc ]]; then
       newer_files+=("$file")
-      file_nt_profilerc=1
     fi
   done
 
-  if [[ $file_nt_profilerc -eq 1 ]]; then
+  if [[ ${#newer_files[@]} -gt 0 ]]; then
     _nix_direnv_info "cache invalidated: files newer than cache:"
     echo -n "$_NIX_DIRENV_LOG_PREFIX" >/dev/stderr
-    printf "%s\n" "${newer_files[@]}" >/dev/stderr
+    printf "%s\n" "${newer_files[@]:0:5}" >/dev/stderr
+    [[ ${#newer_files[@]} -gt 5 ]] && echo "And $((${#newer_files[@]} - 5)) more" >/dev/stderr
   fi
 
-  if [[ $profile_missing -eq 1 || $profile_rc_missing -eq 1 || $file_nt_profilerc -eq 1 ]]; then
+  if [[ $profile_missing -eq 1 || $profile_rc_missing -eq 1 || ${#newer_files[@]} -gt 0 ]]; then
     if [[ $_nix_direnv_manual_reload -eq 1 && -z ${_nix_direnv_force_reload-} ]]; then
       _nix_direnv_warn_manual_reload "$profile_rc"
     else
@@ -550,7 +557,7 @@ use_nix() {
 
         echo "$tmp_profile_rc" >"$profile_rc"
         _nix_add_gcroot "$tmp_profile" "$profile"
-        /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/rm -f "$tmp_profile" "$tmp_profile"*
+        /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/rm -f "$tmp_profile" "$tmp_profile"*
         _nix_direnv_info "Renewed cache"
       else
         if [[ $_nix_direnv_allow_fallback -eq 1 ]]; then
@@ -591,13 +598,13 @@ use_nix() {
 # resholve: keep $ambient_nix
 # resholve: keep $cmd
 # resholve: keep $direnv
-# resholve: keep /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/basename
-# resholve: keep /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/cat
-# resholve: keep /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/chmod
-# resholve: keep /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/mkdir
-# resholve: keep /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/realpath
-# resholve: keep /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/rm
-# resholve: keep /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/sha1sum
-# resholve: keep /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/sort
-# resholve: keep /nix/store/hlxw2q9qansq7bn52xvlb5badw3z1v8s-coreutils-9.10/bin/touch
+# resholve: keep /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/basename
+# resholve: keep /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/cat
+# resholve: keep /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/chmod
+# resholve: keep /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/mkdir
+# resholve: keep /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/realpath
+# resholve: keep /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/rm
+# resholve: keep /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/sha1sum
+# resholve: keep /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/sort
+# resholve: keep /nix/store/9ypz3flqsrl5xl495mm8h645gadjsxi1-coreutils-9.11/bin/touch
 

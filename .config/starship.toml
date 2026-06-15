@@ -1,5 +1,5 @@
 add_newline = true
-format = "[╭╴](238)$os$all[╰─󰁔](237)$character"
+format = "[╭╴](238)$os$all[╰─󰁔](237) "
 
 [battery]
 disabled = true
@@ -56,10 +56,10 @@ behind = "⇣${count}"
 conflicted = "🏳"
 deleted = " "
 diverged = "⇕⇡${ahead_count}⇣${behind_count}"
-format = "[\\($all_status$ahead_behind\\)]($style) "
+format = '[\($all_status$ahead_behind\)]($style) '
 modified = " "
 renamed = "󰖷 "
-staged = "[++\\($count\\)](green)"
+staged = '[++\($count\)](green)'
 stashed = "󰏗 "
 style = "bold green"
 untracked = " "
