@@ -3,4 +3,5 @@ After=graphical-session-pre.target
 BindsTo=graphical-session.target
 Description=Hyprland compositor session
 Documentation=man:systemd.special(7)
+PropagatesStopTo=graphical-session.target
 Wants=graphical-session-pre.target

@@ -3,7 +3,7 @@ WantedBy=default.target
 
 [Service]
 Environment='PATH='
-ExecStart=/nix/store/9c3v55zkbawkmz8d66akmpq2mnikk76l-sops-nix-user
+ExecStart=/nix/store/ki6gld19627nwfq8khijk4mj7m8y65zy-sops-nix-user
 Type=oneshot
 
 [Unit]

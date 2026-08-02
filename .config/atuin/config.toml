@@ -2,9 +2,15 @@ dialect = "uk"
 inline_height = 30
 show_preview = true
 style = "compact"
-# sync_address = "https://atuin.isabelroses.com"  # set your own
+sync_address = "https://atuin.isabelroses.com"
 sync_frequency = "5m"
 update_check = false
+
+[ai]
+enabled = false
+
+[logs]
+dir = "/home/isabel/.local/state/atuin/logs"
 
 [theme]
 name = "catppuccin-mocha-pink"

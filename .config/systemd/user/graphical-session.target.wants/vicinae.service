@@ -2,7 +2,7 @@
 WantedBy=graphical-session.target
 
 [Service]
-ExecStart=/nix/store/bwmh2iz7wpn2466q8p40jcmy95biika6-vicinae-0.19.9/bin/vicinae server
+ExecStart=/nix/store/kxs95r0pqk1if712lbq3i4zx75nkklg4-vicinae-0.23.2/bin/vicinae server
 KillMode=process
 Restart=always
 RestartSec=5
@@ -13,3 +13,8 @@ After=graphical-session.target
 Description=Vicinae server daemon
 Documentation=https://docs.vicinae.com
 PartOf=graphical-session.target
+X-Restart-Triggers=/nix/store/vaz96fdw9447bvyw3l7a861sb09jkp3x-vicinae-settings
+X-Restart-Triggers=/nix/store/9rkl1sch4684vbcdw1vvp8986p5lk5s8-vicinae-extension-nix-0
+X-Restart-Triggers=/nix/store/yz3gyipv9s6fj0mcr40xw9y0786df4l3-vicinae-extension-wifi-commander-0
+X-Restart-Triggers=/nix/store/shi1z1yy31xi80id3wgp83pl1q8vwnix-vicinae-extension-bluetooth-0
+X-Restart-Triggers=/nix/store/9hpf7z8sw0s67i53a5cfmf4nwwlslfzw-raycast-extension-pdsls-0
