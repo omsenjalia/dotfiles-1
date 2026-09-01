@@ -1,0 +1,61 @@
+{
+  lib,
+  self,
+  config,
+  ...
+}:
+let
+  cfg = config.garden.services.snot;
+  rdomain = config.networking.domain;
+
+  inherit (lib.modules) mkIf;
+  inherit (self.lib) mkServiceOption mkSecret;
+in
+{
+  options.garden.services.snot = mkServiceOption "snot" {
+    port = 3033;
+    domain = "knot.${rdomain}";
+  };
+
+  config = mkIf cfg.enable {
+    sops.secrets.snot-webhook = mkSecret {
+      file = "snot";
+      key = "env";
+    };
+
+    services = {
+      snot = {
+        enable = true;
+
+        forgejoGroup = config.services.forgejo.group;
+        environmentFiles = [ config.sops.secrets.snot-webhook.path ];
+
+        settings = {
+          hostname = cfg.domain;
+          listen_addr = "${cfg.host}:${toString cfg.port}";
+          owner_did = "did:plc:qxichs7jsycphrsmbujwqbfb";
+          repo_root = config.services.forgejo.repositoryRoot;
+          push_remote = "forgejo@${config.garden.services.forgejo.domain}";
+          users."did:plc:qxichs7jsycphrsmbujwqbfb" = "isabel";
+        };
+      };
+
+      postgresql.ensureUsers = lib.lists.singleton { name = "snot"; };
+
+      nginx.virtualHosts.${cfg.domain} = {
+        locations."/" = {
+          proxyWebsockets = true;
+          proxyPass = "http://${cfg.host}:${toString cfg.port}";
+        };
+      };
+    };
+
+    systemd.services.postgresql-setup.script = lib.modules.mkAfter ''
+      psql -d forgejo <<'EOF'
+        GRANT CONNECT ON DATABASE forgejo TO "snot";
+        ALTER DEFAULT PRIVILEGES FOR ROLE forgejo GRANT SELECT ON TABLES TO "snot";
+        GRANT SELECT ON ALL TABLES IN SCHEMA public TO "snot";
+      EOF
+    '';
+  };
+}
