@@ -1,0 +1,74 @@
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
+let
+  inherit (lib.modules) mkIf mkForce;
+  enable =
+    config.garden.profiles.hetzner.enable
+    || config.garden.profiles.upcloud.enable
+    || config.garden.profiles.oracle.enable;
+in
+{
+  config = mkIf enable {
+    services = {
+      # Unavailable - device lacks SMART capability.
+      smartd.enable = mkForce false;
+
+      # Needed by the Hetzner Cloud password reset feature
+      qemuGuest.enable = true;
+
+      # there is no physical hardware here to flash firmware onto
+      fwupd.enable = mkForce false;
+    };
+
+    # a vm has no devices that need firmware blobs loaded into them, and
+    # linux-firmware is not small
+    hardware.enableRedistributableFirmware = mkForce false;
+
+    systemd.services.qemu-guest-agent.path = [ pkgs.shadow ];
+
+    boot = {
+      growPartition = !config.boot.initrd.systemd.enable;
+      kernelParams = [ "net.ifnames=0" ];
+      kernel.sysctl = {
+        "net.ipv4.ip_forward" = true;
+        "net.ipv6.conf.all.forwarding" = true;
+      };
+
+      initrd = {
+        availableKernelModules = [
+          "ata_piix"
+          "uhci_hcd"
+          "xen_blkfront"
+
+          "virtio_net"
+          "virtio_pci"
+          "virtio_mmio"
+          "virtio_blk"
+          "virtio_scsi"
+          "9p"
+          "9pnet_virtio"
+        ]
+        ++ lib.lists.optionals (!config.garden.profiles.oracle.enable) [
+          "vmw_pvscsi"
+        ];
+
+        kernelModules = [
+          "nvme"
+          "virtio_balloon"
+          "virtio_console"
+          "virtio_rng"
+          "virtio_gpu"
+        ];
+      };
+
+      loader.grub = {
+        useOSProber = mkForce false;
+        efiSupport = mkForce false;
+      };
+    };
+  };
+}
