@@ -1,0 +1,32 @@
+{
+  lib,
+  pkgs,
+  ...
+}:
+{
+  fonts.packages = lib.attrsets.attrValues {
+    inherit (pkgs)
+      corefonts
+
+      source-sans
+      source-serif
+
+      dejavu_fonts
+      inter
+
+      noto-fonts
+
+      # fonts for none latin languages
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+
+      # install some emoji fonts
+      twemoji-color-font
+      noto-fonts-color-emoji
+      material-icons
+      material-design-icons
+      ;
+
+    inherit (pkgs.nerd-fonts) symbols-only;
+  };
+}
