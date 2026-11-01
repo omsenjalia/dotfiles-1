@@ -1,0 +1,9 @@
+# funny macos thing
+.DS_Store
+
+# Ignore nixos build outputs
+result*
+.direnv/
+
+# deploy script
+.deploy-summary
