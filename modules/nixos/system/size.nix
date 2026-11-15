@@ -1,0 +1,35 @@
+{ lib, ... }:
+let
+  inherit (lib.modules) mkForce;
+in
+{
+  environment = {
+    # disable stub-ld, this exists to kill dynamically linked executables, since they cannot work
+    # on NixOS, however we know that so we don't need to see the warning
+    stub-ld.enable = false;
+
+    # disable all packages installed by default, i prefer my own packages
+    # this list normally includes things like perl
+    defaultPackages = mkForce [ ];
+  };
+
+  programs = {
+    # this is on by default. but i don't use nano
+    nano.enable = false;
+
+    # i don't need less, so lets just remove it, lol
+    less.enable = mkForce false;
+
+    # disable command-not-found, it doesn't help, and it adds perl
+    # which we don't need, and we know when we don't have a command anyway
+    command-not-found.enable = false;
+  };
+
+  # this can allow us to save some storage space
+  fonts.fontDir.decompressFonts = true;
+
+  # this enables itself on systems that are graphical. but i don't need it this
+  # module adds pkgs.speachd which is like 700MiB. we still will have
+  # speachd-minimal in our closure due to browsers
+  services.speechd.enable = false;
+}

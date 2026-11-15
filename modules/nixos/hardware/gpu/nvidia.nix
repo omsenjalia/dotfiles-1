@@ -1,0 +1,70 @@
+# A worthy read before attempting to change anything here:
+# <https://discourse.nixos.org/t/can-we-solve-the-nvidia-situation/73198>
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
+let
+  inherit (config.garden) device;
+  inherit (lib.modules) mkIf mkDefault;
+in
+{
+  config = mkIf (device.gpu == "nvidia") {
+    services.xserver.videoDrivers = [ "nvidia" ];
+
+    boot = {
+      # Enables the Nvidia's experimental framebuffer device
+      # fix for the imaginary monitor that does not exist
+      kernelParams = [ "nvidia_drm.fbdev=1" ];
+
+      # i don't care for the HDMI nvidia stuff
+      blacklistedKernelModules = [ "snd_hda_codec_hdmi" ];
+    };
+
+    environment.sessionVariables = {
+      LIBVA_DRIVER_NAME = "nvidia";
+
+      # GBM_BACKEND = "nvidia-drm"; # breaks firefox apparently
+      WLR_DRM_DEVICES = mkDefault "/dev/dri/card1";
+    };
+
+    garden.packages = {
+      inherit (pkgs)
+        # vulkan
+        vulkan-tools
+        vulkan-loader
+        vulkan-validation-layers
+        vulkan-extension-layer
+
+        # libva
+        libva
+        libva-utils
+        ;
+    };
+
+    hardware = {
+      nvidia = {
+        # use the latest and greatest nvidia drivers
+        branch = "bleeding_edge";
+
+        powerManagement = {
+          enable = true;
+          finegrained = false;
+        };
+
+        # dont use the open drivers by default
+        open = false;
+
+        # adds nvidia-settings to pkgs, so useless on nixos
+        nvidiaSettings = false;
+      };
+
+      graphics = {
+        extraPackages = [ pkgs.nvidia-vaapi-driver ];
+        extraPackages32 = [ pkgs.pkgsi686Linux.nvidia-vaapi-driver ];
+      };
+    };
+  };
+}

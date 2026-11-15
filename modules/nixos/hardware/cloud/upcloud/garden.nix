@@ -1,0 +1,17 @@
+{ lib, config, ... }:
+let
+  inherit (lib.modules) mkIf;
+  inherit (lib.options) mkEnableOption;
+in
+{
+  options.garden.profiles.upcloud = {
+    enable = mkEnableOption "UpCloud profile";
+  };
+
+  config = mkIf config.garden.profiles.upcloud.enable {
+    garden.system.boot = {
+      loader = "grub";
+      grub.device = "/dev/vda";
+    };
+  };
+}
